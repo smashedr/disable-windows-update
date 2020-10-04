@@ -1,0 +1,12 @@
+.idea/
+*.iml
+**/venv/
+**/__pycache__/
+*.pyc
+.coverage
+*.log
+*.sqlite3
+settings.env
+bin/
+*.exe
+*.zip
