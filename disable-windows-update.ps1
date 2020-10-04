@@ -1,6 +1,5 @@
-$service_name = "wuauserv"
 
-function StopDisableService($service_name) {
+function StopService($service_name) {
     $service = Get-Service $service_name
     $name = $service.DisplayName
 
@@ -8,6 +7,11 @@ function StopDisableService($service_name) {
         Write-Output "$(Get-Date) Stopping: $name"
         $service | Stop-Service
     }
+}
+
+function DisableService($service_name) {
+    $service = Get-Service $service_name
+    $name = $service.DisplayName
 
     if ($service.StartType -ne 'Disabled') {
         Write-Output "$(Get-Date) Disabling: $name"
@@ -21,9 +25,11 @@ if (-Not $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Adm
     Read-Host "Press <enter> or close the window to exit"
 }
 
-Write-Output "$(Get-Date) Monitoring service: $service_name"
+Write-Output "$(Get-Date) Starting Windows Update Service Monitor..."
 
 while ($true) {
-    StopDisableService($service_name)
+    StopService("wuauserv")
+    DisableService("wuauserv")
+    StopService("WaaSMedicSvc")
     Start-Sleep -s 15
 }
